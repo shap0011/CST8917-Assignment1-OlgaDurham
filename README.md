@@ -38,6 +38,12 @@ Overall, the paper argues that while serverless computing improves operational s
 
 ## Part 2: Azure Durable Functions Deep Dive (5 topic explanations)
 
+### Orchestration Model
+
+Azure Durable Functions extends basic Azure Functions by introducing a structured workflow model built on the Durable Task Framework (Microsoft, 2024a). Instead of isolated, stateless function invocations, Durable Functions separates execution into three roles: **client functions**, which start workflows; **orchestrator functions**, which define the workflow logic; and **activity functions**, which perform individual tasks. The orchestrator coordinates execution by scheduling activities and managing dependencies between them.
+
+This model differs significantly from traditional FaaS, where each function invocation runs independently without built-in coordination. By introducing an explicit orchestration layer, Durable Functions addresses Hellerstein et al.'s (2019) criticism that first-generation serverless platforms lack structured composition for distributed workflows. However, orchestration logic is still persisted in underlying storage for reliability, meaning coordination remains storage-backed rather than direct peer-to-peer communication.
+
 ---
 
 ## Part 3: Critical Evaluation (400-600 words)
