@@ -81,11 +81,11 @@ All claims must be supported with cited sources.
 
 ### Part 3: Critical Evaluation
 
-**1. Limitations That Remain Unresolved**
+Building on your work in Parts 1 and 2, write an analysis (400-600 words) addressing the following:
 
-Although Azure Durable Functions improves workflow coordination and state management, two major criticisms identified by Hellerstein et al. (2019) remain only partially resolved.
+1. **Limitations that remain unresolved**: Identify **two** criticisms from the paper that Azure Durable Functions has **not** resolved or only partially addresses. Explain why these limitations persist.
 
-First, **storage-mediated communication and the data-shipping architecture persist**. Durable Functions formalizes orchestration and state handling through event sourcing and checkpointing, but all coordination between orchestrator and activity functions still relies on Azure Storage (Microsoft, 2024a). Tasks are scheduled via queues, and results are persisted to storage before replay. This means computation and data remain physically separated. Hellerstein et al. (2019) argue that shipping data to stateless compute rather than colocating computation with data creates performance inefficiencies and I/O bottlenecks. Durable Functions does not eliminate this architectural separation; instead, it manages it more elegantly. While programmability improves, the underlying performance constraints associated with storage-backed coordination still apply.
+2. **Your Verdict**: Does Azure Durable Functions represent the kind of progress the authors envisioned for serverless computing, or does it merely work around the fundamental limitations without truly solving them? Take a clear position and support it with evidence from your research.
 
 ---
 
