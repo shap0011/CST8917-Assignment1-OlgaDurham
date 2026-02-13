@@ -62,6 +62,12 @@ In Azure Durable Functions, communication between orchestrator and activity func
 
 This design improves reliability and fault tolerance but still relies on storage-mediated communication. Hellerstein et al. (2019) argue that first-generation FaaS platforms force functions to communicate through slow storage intermediaries rather than direct, low-latency networking. Durable Functions does not fundamentally eliminate this architecture; it formalizes and manages it. Therefore, while communication is structured and automated, it still inherits the performance trade-offs identified in the paper.
 
+### Parallel Execution (Fan-Out/Fan-In)
+
+Azure Durable Functions supports parallel execution through the fan-out/fan-in pattern, where an orchestrator function schedules multiple activity functions concurrently and then waits for all of them to complete before aggregating results (Microsoft, 2024a). This enables scalable parallel workloads such as processing large data sets, performing batch operations, or invoking multiple external services simultaneously. The orchestration framework manages task scheduling, completion tracking, and result aggregation automatically.
+
+This pattern partially addresses Hellerstein et al.’s (2019) criticism that FaaS platforms limit distributed coordination. Durable Functions provides a structured way to coordinate parallel tasks within a workflow. However, the coordination mechanism still depends on storage-backed state tracking rather than direct peer-to-peer communication. As a result, while parallelism is supported at the workflow level, the underlying architecture remains constrained by the same storage-mediated communication model identified in the paper.
+
 ---
 
 ## Part 3: Critical Evaluation (400-600 words)
