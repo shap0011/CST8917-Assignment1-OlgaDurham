@@ -46,7 +46,20 @@ Overall, the paper argues that while serverless computing improves operational s
 
 ## References
 
-- Hellerstein, J. M., Faleiro, J., Gonzalez, J. E., Schleier-Smith, J., Sreekanti, V., Tumanov, A., & Wu, C. (2019). Serverless computing: One step forward, two steps back. Conference on Innovative Data Systems Research (CIDR). https://www.cidrdb.org/cidr2019/papers/p119-hellerstein-cidr19.pdf
+- Hellerstein, J. M., Faleiro, J., Gonzalez, J. E., Schleier-Smith, J., Sreekanti, V., Tumanov, A., & Wu, C. (2019). *Serverless computing: One step forward, two steps back.* CIDR.
+https://www.cidrdb.org/cidr2019/papers/p119-hellerstein-cidr19.pdf
+- Microsoft. (2024). *Durable Functions overview.*
+https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-overview
+- Microsoft. (2024). *Orchestrator function code constraints and behavior.*
+https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-code-constraints
+- Microsoft. (2024). *Durable Functions application patterns.*
+https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-overview#application-patterns
+- Microsoft. (2024). *Durable Functions internals (storage and event sourcing).*
+https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-serialization-and-persistence
+- Microsoft. (2024). *Durable Functions reliability and long-running workflows.*
+https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-overview#reliability
+- Microsoft. (2024). *Fan-out/fan-in pattern in Durable Functions.*
+https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-cloud-backup
 
 ---
 
