@@ -56,6 +56,12 @@ Traditional Azure Functions, like other FaaS platforms, are subject to execution
 
 This design allows Durable workflows to run for hours, days, or even longer without being constrained by a single execution window. However, individual activity functions are still subject to standard Azure Function timeout limits. Therefore, Durable Functions works around execution limits at the workflow level but does not eliminate them entirely.
 
+### Communication Between Functions
+
+In Azure Durable Functions, communication between orchestrator and activity functions does not occur through direct network messaging. Instead, interactions are coordinated through the Durable Task Framework, which persists execution history and task messages in Azure Storage (typically using queues and tables) (Microsoft, 2024b). When an orchestrator schedules an activity, the request is written to storage, and the activity retrieves it asynchronously. Results are also written back to storage, where the orchestrator reads them during replay.
+
+This design improves reliability and fault tolerance but still relies on storage-mediated communication. Hellerstein et al. (2019) argue that first-generation FaaS platforms force functions to communicate through slow storage intermediaries rather than direct, low-latency networking. Durable Functions does not fundamentally eliminate this architecture; it formalizes and manages it. Therefore, while communication is structured and automated, it still inherits the performance trade-offs identified in the paper.
+
 ---
 
 ## Part 3: Critical Evaluation (400-600 words)
