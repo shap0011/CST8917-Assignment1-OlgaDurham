@@ -50,6 +50,12 @@ Unlike basic FaaS, where functions are fully stateless and must manually externa
 
 This checkpoint-and-replay model allows workflows to persist across restarts and recover from failures, enabling long-running, stateful processes. In this sense, Durable Functions partially addresses Hellerstein et al.’s (2019) criticism that FaaS platforms are fundamentally stateless. However, state persistence still relies on external storage, meaning the architecture continues to separate computation from data rather than colocating them.
 
+### Execution Timeouts
+
+Traditional Azure Functions, like other FaaS platforms, are subject to execution time limits depending on the hosting plan. Hellerstein et al. (2019) criticize similar limits in AWS Lambda (e.g., 15 minutes), arguing that they prevent long-running and iterative workloads. Azure Durable Functions mitigates this limitation through its checkpointing mechanism. Orchestrator functions do not run continuously for long periods; instead, they execute briefly, persist their state to storage, and then unload. When triggered again, the runtime replays the execution history and resumes from the last checkpoint (Microsoft, 2024a).
+
+This design allows Durable workflows to run for hours, days, or even longer without being constrained by a single execution window. However, individual activity functions are still subject to standard Azure Function timeout limits. Therefore, Durable Functions works around execution limits at the workflow level but does not eliminate them entirely.
+
 ---
 
 ## Part 3: Critical Evaluation (400-600 words)
