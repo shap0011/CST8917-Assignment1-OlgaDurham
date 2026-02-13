@@ -115,4 +115,4 @@ https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-clou
 
 ## AI Disclosure Statement
 
-State whether you used AI tools. If yes, describe how (e.g., "Used ChatGPT to help summarize Section 3 of the paper"). If no AI tools were used, state that explicitly.
+ChatGPT was used as a writing support tool during the preparation of this assignment. Specifically, it assisted in summarizing concepts from Hellerstein et al. (2019), organizing the structure of responses, and refining academic wording. The Azure Durable Functions explanations were cross-checked against official Microsoft documentation. All claims were verified by the author using the cited sources. The final submission reflects the author’s own understanding, interpretation, and critical evaluation of the materials.
