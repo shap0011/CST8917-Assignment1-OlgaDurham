@@ -70,7 +70,27 @@ This pattern partially addresses Hellerstein et al.’s (2019) criticism that Fa
 
 ---
 
-## Part 3: Critical Evaluation (400-600 words)
+## Part 3: Critical Evaluation
+
+### Part 3: Critical Evaluation
+
+**1. Limitations That Remain Unresolved**
+
+Although Azure Durable Functions improves workflow coordination and state management, two major criticisms identified by Hellerstein et al. (2019) remain only partially resolved.
+
+First, **storage-mediated communication and the data-shipping architecture persist**. Durable Functions formalizes orchestration and state handling through event sourcing and checkpointing, but all coordination between orchestrator and activity functions still relies on Azure Storage (Microsoft, 2024a). Tasks are scheduled via queues, and results are persisted to storage before replay. This means computation and data remain physically separated. Hellerstein et al. (2019) argue that shipping data to stateless compute rather than colocating computation with data creates performance inefficiencies and I/O bottlenecks. Durable Functions does not eliminate this architectural separation; instead, it manages it more elegantly. While programmability improves, the underlying performance constraints associated with storage-backed coordination still apply.
+
+Second, **limited hardware access remains unresolved**. Durable Functions runs on standard Azure Functions infrastructure, which provides generic CPU and memory resources without direct support for GPUs or specialized accelerators. Hellerstein et al. (2019) emphasize that modern data-intensive workloads, particularly in machine learning, increasingly depend on hardware acceleration. Durable Functions does not introduce heterogeneous hardware scheduling or affinity-aware placement. As a result, workloads requiring GPUs or specialized processing must still rely on separate Azure services, reinforcing dependence on proprietary managed platforms rather than enabling general-purpose cloud programming.
+
+**2. Verdict**
+
+Azure Durable Functions represents meaningful progress beyond first-generation FaaS but does not fully realize the broader vision proposed by Hellerstein et al. (2019). It clearly addresses some concerns at the programmability level. For example, Durable Functions mitigates strict execution time limits by enabling long-running workflows through checkpointing and replay. It also introduces structured orchestration and parallel patterns such as fan-out/fan-in, which improve coordination compared to isolated FaaS invocations (Microsoft, 2024a).
+
+However, these improvements operate primarily at the abstraction layer rather than the infrastructure layer. Durable Functions provides workflow-level state and coordination, but it continues to depend on storage-backed communication and generic virtualized compute. The core architectural issues identified in the paper, data shipping, lack of hardware specialization, and indirect communication, are not fundamentally eliminated.
+
+Therefore, Durable Functions can be understood as an evolutionary improvement rather than a revolutionary shift. It improves developer productivity and workflow management, but it largely works around the inherent constraints of the serverless model instead of redesigning the underlying cloud architecture to enable fluid code, data placement, heterogeneous hardware support, or long-running addressable agents in the sense envisioned by Hellerstein et al. (2019).
+
+In conclusion, Azure Durable Functions advances serverless computing toward greater practical usability, yet it stops short of fulfilling the transformative potential the authors describe. It represents progress, but not the full step forward that would truly unlock the cloud’s distributed and data-centric capabilities.
 
 ---
 
