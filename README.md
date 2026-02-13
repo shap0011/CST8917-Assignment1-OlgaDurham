@@ -6,11 +6,11 @@
 
 ---
 
-## Part 1: Paper Summary (400-600 words)
+## Part 1: Paper Summary
 
 ### 1.1 Main Argument (central thesis)
 
-Hellerstein et al. (2019) argue that first-generation serverless platforms, particularly Functions-as-a-Service (FaaS), represent a significant operational improvement in cloud computing but ultimately fall short of enabling modern data-intensive and distributed applications. The authors describe this tension as "one step forward, two steps back". The "one step forward" refers to the autoscaling, pay-per-use model of FaaS platforms. Developers can upload event-driven functions without provisioning servers, and the platform automatically allocates and deallocates compute resources based on demand. This model reduces operational overhead, simplifies deployment, and offers seemingly unlimited elasticity.
+Hellerstein et al. (2019) argue that first-generation serverless platforms, particularly Functions-as-a-Service (FaaS), represent a significant operational improvement in cloud computing but ultimately fall short of enabling modern data-intensive and distributed applications. The authors describe this tension as "one step forward, two steps back". The "one step forward" refers to the autoscaling, pay-per-use model of FaaS platforms. Developers can upload event-driven functions without provisioning servers, and the platform automatically allocates and deallocates compute resources as needed. This model reduces operational overhead, simplifies deployment, and offers seemingly unlimited elasticity.
 
 However, the “two steps back” reflect architectural limitations that undermine the broader potential of cloud computing. According to the authors, current FaaS systems are built around short-lived, stateless, and isolated function invocations. While this design supports elasticity and management simplicity, it ignores key requirements of modern computing, especially efficient data processing, hardware acceleration, and distributed coordination. As a result, serverless platforms are well-suited for simple, embarrassingly parallel tasks but poorly suited for complex, stateful, and data-rich systems.
 
@@ -43,6 +43,12 @@ Overall, the paper argues that while serverless computing improves operational s
 Azure Durable Functions extends basic Azure Functions by introducing a structured workflow model built on the Durable Task Framework (Microsoft, 2024a). Instead of isolated, stateless function invocations, Durable Functions separates execution into three roles: **client functions**, which start workflows; **orchestrator functions**, which define the workflow logic; and **activity functions**, which perform individual tasks. The orchestrator coordinates execution by scheduling activities and managing dependencies between them.
 
 This model differs significantly from traditional FaaS, where each function invocation runs independently without built-in coordination. By introducing an explicit orchestration layer, Durable Functions addresses Hellerstein et al.'s (2019) criticism that first-generation serverless platforms lack structured composition for distributed workflows. However, orchestration logic is still persisted in underlying storage for reliability, meaning coordination remains storage-backed rather than direct peer-to-peer communication.
+
+### State Management (Event Sourcing, Checkpointing, Replay)
+
+Unlike basic FaaS, where functions are fully stateless and must manually externalize all data, Azure Durable Functions provides built-in state management through event sourcing and checkpointing (Microsoft, 2024b). Orchestrator functions do not store state in memory between executions. Instead, every action, such as scheduling an activity or receiving a result, is recorded in durable storage. When the function resumes, the runtime replays the stored execution history to reconstruct the orchestration state deterministically.
+
+This checkpoint-and-replay model allows workflows to persist across restarts and recover from failures, enabling long-running, stateful processes. In this sense, Durable Functions partially addresses Hellerstein et al.’s (2019) criticism that FaaS platforms are fundamentally stateless. However, state persistence still relies on external storage, meaning the architecture continues to separate computation from data rather than colocating them.
 
 ---
 
