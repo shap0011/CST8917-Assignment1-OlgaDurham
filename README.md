@@ -10,46 +10,29 @@
 
 ### 1.1 Main Argument (central thesis)
 
-Hellerstein et al. argue that today’s **serverless** offerings, especially Functions-as-a-Service (FaaS) like AWS Lambda, deliver a real breakthrough in operational simplicity and autoscaling: developers can upload code, trigger it by events, and pay only for execution without managing servers. That’s the **one step forward**.
+Hellerstein et al. (2019) argue that first-generation serverless platforms, particularly Functions-as-a-Service (FaaS), represent a significant operational improvement in cloud computing but ultimately fall short of enabling modern data-intensive and distributed applications. The authors describe this tension as "one step forward, two steps back". The "one step forward" refers to the autoscaling, pay-per-use model of FaaS platforms. Developers can upload event-driven functions without provisioning servers, and the platform automatically allocates and deallocates compute resources based on demand. This model reduces operational overhead, simplifies deployment, and offers seemingly unlimited elasticity.
 
-But they claim serverless also takes **two steps back** because the current model is built around short-lived, isolated, non-addressable functions that are separated from data and from each other. This design makes many modern workloads, especially data-intensive and distributed/stateful systems, inefficient or impractical, and it nudges developers toward proprietary managed services instead of enabling broad innovation on the cloud platform. (Hellerstein et al., 2019)
+However, the “two steps back” reflect architectural limitations that undermine the broader potential of cloud computing. According to the authors, current FaaS systems are built around short-lived, stateless, and isolated function invocations. While this design supports elasticity and management simplicity, it ignores key requirements of modern computing, especially efficient data processing, hardware acceleration, and distributed coordination. As a result, serverless platforms are well-suited for simple, embarrassingly parallel tasks but poorly suited for complex, stateful, and data-rich systems.
 
 ### 1.2 Key Limitations Identified
 
-Hellerstein et al. identify several structural limitations in first-generation FaaS platforms that undermine their usefulness for modern cloud computing.
+The authors identify several critical limitations of current FaaS platforms.
 
-**Execution time constraints.**
-Functions in platforms like AWS Lambda are short-lived (e.g., 15-minute maximum). Because function instances are ephemeral and cannot rely on being reused, developers must externalize all persistent state to storage systems. This makes long-running analytics, iterative machine learning training, and stateful workflows inefficient or fragmented across multiple invocations (Hellerstein et al., 2019).
+- **Execution time constraints:** Functions in platforms like AWS Lambda have strict lifetime limits (e.g., 15 minutes). Because function instances are ephemeral and cannot assume they will be reused, all persistent state must be stored externally. This makes long-running analytics, iterative machine learning training, and stateful workflows inefficient and fragmented across multiple invocations (Hellerstein et al., 2019).
 
-**Communication and network limitations.**
-Serverless functions are not directly addressable over the network. They cannot communicate with each other via low-latency messaging and must instead exchange data through intermediary storage services like S3 or DynamoDB. The authors show that this introduces severe I/O bottlenecks and high latency. Network bandwidth per function is limited, and performance degrades as concurrency increases, making distributed coordination slow and expensive.
+- **Communication and network limitations:** FaaS functions are not directly network-addressable. They cannot communicate via low-latency messaging and must instead exchange data through storage services such as S3 or DynamoDB. The authors demonstrate that this introduces significant I/O bottlenecks, limited per-function bandwidth, and high latency. As concurrency increases, effective bandwidth per function decreases, making distributed coordination costly and slow.
 
-**The `data shipping` anti-pattern.**
-FaaS separates compute from data and forces functions to pull data across the network rather than executing computation near where data resides. This **shipping data to code** model ignores well-known principles of database and systems design, where moving computation closer to data reduces latency, bandwidth usage, and cost.
+- **The "data shipping" anti-pattern:** Because computation is separated from data, FaaS platforms require data to be moved to stateless functions rather than placing computation near the data. The authors argue that this contradicts established database design principles, where minimizing data movement improves performance, reduces cost, and lowers latency.
 
-**Limited hardware access.**
-FaaS platforms provide only basic virtualized CPU and memory slices, with no access to GPUs or specialized accelerators. Given the growing importance of hardware acceleration (e.g., for machine learning), this constraint restricts innovation and prevents efficient execution of many modern workloads.
+- **Limited hardware access:** FaaS platforms offer only generic virtualized CPU and memory slices, with no support for GPUs or specialized accelerators. Given the growing importance of hardware acceleration in machine learning and large-scale data processing, this restriction limits innovation and performance.
 
-**Challenges for distributed and stateful systems.**
-Because functions cannot maintain identity or persistent state and cannot directly message one another, implementing distributed protocols (e.g., leader election, coordination, consistency) becomes extremely slow and costly. The authors demonstrate that even simple coordination mechanisms require repeated reads and writes to storage, making large-scale distributed systems impractical under the FaaS model.
+- **Challenges for distributed and stateful workloads:** Since functions cannot maintain identity or persistent communication channels, implementing distributed protocols such as leader election or consensus becomes extremely inefficient. Coordination requires repeated reads and writes to remote storage, dramatically increasing latency and cost.
 
 ### 1.3 Proposed Future Directions
 
-To unlock the cloud’s full potential, Hellerstein et al. argue that serverless must evolve beyond the current FaaS model toward a more flexible and performance-aware programming environment.
+To overcome these limitations, Hellerstein et al. (2019) propose a more advanced cloud programming model. They advocate for fluid code and data placement, allowing infrastructure to dynamically co-locate computation with data when beneficial. They call for support for heterogeneous hardware, enabling workloads to leverage GPUs and specialized accelerators. The authors also propose long-running, addressable virtual agents that maintain identity and communicate efficiently while remaining elastic. Finally, they emphasize the need for programming models designed for asynchronous, distributed environments rather than strictly sequential execution.
 
-**Fluid code and data placement.**
-The authors propose that cloud systems should support dynamic co-location of code and data. Instead of always shipping data to stateless functions, infrastructure should be able to move computation closer to where data resides when beneficial. High-level, declarative languages (e.g., SQL, MapReduce-style DSLs) could help the platform optimize placement decisions automatically.
-
-**Long-running, addressable virtual agents.**
-They advocate for persistent, logically identifiable software entities (e.g., actors or services) that can maintain state over time and communicate efficiently. These agents should remain elastic and be dynamically mapped to physical resources, but without the extreme ephemerality of current FaaS functions.
-
-**Heterogeneous hardware support.**
-Future cloud programming models should expose or intelligently utilize specialized hardware such as GPUs or accelerators. Developers should be able to express performance requirements or hardware affinity, while the platform manages allocation dynamically.
-
-**Disorderly, scalable programming models.**
-The authors emphasize the need for programming paradigms that naturally support asynchronous, distributed, and loosely consistent computation. Rather than sequential metaphors, cloud-native systems should encourage small, movable units of computation that scale across time and space.
-
-Overall, they envision a programmable cloud that preserves autoscaling and pay-per-use economics while restoring efficient data processing, distributed coordination, and innovation capacity (Hellerstein et al., 2019).
+Overall, the paper argues that while serverless computing improves operational simplicity, it must evolve significantly to unlock the full distributed and data-centric potential of the cloud.
 
 ---
 
@@ -63,7 +46,7 @@ Overall, they envision a programmable cloud that preserves autoscaling and pay-p
 
 ## References
 
-All sources cited with working hyperlinks
+- Hellerstein, J. M., Faleiro, J., Gonzalez, J. E., Schleier-Smith, J., Sreekanti, V., Tumanov, A., & Wu, C. (2019). Serverless computing: One step forward, two steps back. Conference on Innovative Data Systems Research (CIDR). https://www.cidrdb.org/cidr2019/papers/p119-hellerstein-cidr19.pdf
 
 ---
 
